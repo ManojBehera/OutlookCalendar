@@ -9,7 +9,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -97,28 +96,20 @@ public class MainActivity extends AppCompatActivity {
         mCalendarView.setItemAnimator(null);
         calendarManager.scrollToPosition(calendarSet.getTodayDateIndex());
 
-
-        mCalendarView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+        mCalendarView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-                //expand calendar:set calendarView's height as a month items height if needed
-                ViewGroup.LayoutParams lp = mCalendarView.getLayoutParams();
-                if(lp.height < screenWidth / 7 * 5) {
-                    lp.height = screenWidth / 7 * 5 + (int) (3 * getResources().getDisplayMetrics().density);
-                    mCalendarView.setLayoutParams(lp);
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if(newState == RecyclerView.SCROLL_STATE_DRAGGING){
+                    //expand calendar:set calendarView's height as a month items height if needed
+                    ViewGroup.LayoutParams lp = mCalendarView.getLayoutParams();
+                    if(lp.height < screenWidth / 7 * 5) {
+                        lp.height = screenWidth / 7 * 5 + (int) (3 * getResources().getDisplayMetrics().density);
+                        mCalendarView.setLayoutParams(lp);
+                    }
                 }
-                return false;
-            }
-
-            @Override
-            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-            }
-
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
             }
         });
-
 
         //initialize schedule View
         RecyclerView scheduleView = (RecyclerView) findViewById(R.id.schedule);
