@@ -15,12 +15,7 @@ import com.ianwong.outlookcalendar.R;
 import com.ianwong.outlookcalendar.weather.WeatherInfo;
 import com.ianwong.outlookcalendar.weather.yahooweather.WeatherResponse;
 
-import org.threeten.bp.DayOfWeek;
 import org.threeten.bp.LocalDate;
-import org.threeten.bp.format.TextStyle;
-import org.w3c.dom.Text;
-
-import java.util.Locale;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;

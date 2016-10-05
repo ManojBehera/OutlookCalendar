@@ -1,10 +1,9 @@
 package com.ianwong.outlookcalendar.schedule;
 
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ianwong.outlookcalendar.R;
@@ -23,11 +22,11 @@ public class ScheduleItemViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         mViewType = viewType;
         mScheduleContent = (TextView)itemView.findViewById(R.id.scheduleContent);
-        if(itemView instanceof LinearLayout && viewType == 1){
+        if(viewType == 1){
             for(int i = 0 ; i < 3 ; i++){
-                mWeatherState[i] = (ImageView)((LinearLayout) itemView).getChildAt(i)
+                mWeatherState[i] = (ImageView)((ViewGroup) itemView).getChildAt(i)
                                     .findViewById(R.id.weatherState);
-                mTemperature[i] = (TextView)((LinearLayout) itemView).getChildAt(i)
+                mTemperature[i] = (TextView)((ViewGroup) itemView).getChildAt(i)
                                     .findViewById(R.id.temperature);
             }
         }
