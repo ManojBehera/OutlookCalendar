@@ -1,30 +1,33 @@
 package com.ianwong.outlookcalendar;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.ianwong.outlookcalendar.calendar.CalendarAdapter;
 import com.ianwong.outlookcalendar.calendar.CalendarItemDecoration;
 import com.ianwong.outlookcalendar.calendar.CalendarSet;
 import com.ianwong.outlookcalendar.schedule.ScheduleItemDecoration;
 import com.ianwong.outlookcalendar.schedule.ScheduleViewAdapter;
 import com.ianwong.outlookcalendar.weather.WeatherInfo;
+import com.ianwong.outlookcalendar.weather.yahooweather.WeatherResponse;
 import com.jakewharton.threetenabp.AndroidThreeTen;
+
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -43,10 +46,29 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(@NonNull View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
+                WeatherInfo.getInstance().getWeatherInfo()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Subscriber<WeatherResponse>() {
+                            @Override
+                            public void onCompleted() {
+                            }
 
-                WeatherInfo.getInstance().getWeatherInfo();
+                            @Override
+                            public void onError(Throwable e) {
+                            }
+
+                            @Override
+                            public void onNext(WeatherResponse weatherResponse) {
+                                String weatherInfo = "city:" + weatherResponse.getQuery().getResults().getChannel().getLocation().getCity()
+                                        + " temp:" + weatherResponse.getQuery().getResults().getChannel().getItem().getCondition().getTemp()
+                                        + " code:" + weatherResponse.getQuery().getResults().getChannel().getItem().getCondition().getCode();
+
+                                Toast toast = Toast.makeText(MainActivity.this, weatherInfo, Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.BOTTOM, 0, 40);
+                                toast.show();
+                            }
+                        });
             }
         });
 
@@ -74,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
         mCalendarView.addItemDecoration(calendarItemDecoration);
         mCalendarView.setItemAnimator(null);
         calendarManager.scrollToPosition(calendarSet.getTodayDateIndex());
+
 
         mCalendarView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
