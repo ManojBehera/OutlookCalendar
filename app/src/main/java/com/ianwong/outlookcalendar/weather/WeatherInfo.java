@@ -53,21 +53,27 @@ public class WeatherInfo {
 
     }
 
+    public static  String convertFahToCel(String temp){
+
+      double cel = Double.parseDouble(temp);
+        return String.valueOf((int)((cel - 32)/1.8)) + "℃";
+    }
+
     public static String getTemperature(WeatherResponse weatherResponse){
-        return weatherResponse.getQuery().getResults()
-                .getChannel().getItem().getCondition().getTemp();
+        return convertFahToCel(weatherResponse.getQuery().getResults()
+                .getChannel().getItem().getCondition().getTemp());
 
     }
 
     public static String getLowTemperature(WeatherResponse weatherResponse){
-        return weatherResponse.getQuery().getResults()
-                .getChannel().getItem().getForecast().get(0).getLow();
+        return convertFahToCel(weatherResponse.getQuery().getResults()
+                .getChannel().getItem().getForecast().get(0).getLow());
 
     }
 
     public static String getHighTemperature(WeatherResponse weatherResponse){
-        return weatherResponse.getQuery().getResults()
-                .getChannel().getItem().getForecast().get(0).getHigh();
+        return convertFahToCel(weatherResponse.getQuery().getResults()
+                .getChannel().getItem().getForecast().get(0).getHigh());
 
     }
 
