@@ -3,13 +3,15 @@ package com.ianwong.outlookcalendar.weather;
 
 import com.ianwong.outlookcalendar.weather.yahooweather.Forecast;
 import com.ianwong.outlookcalendar.weather.yahooweather.WeatherResponse;
-
 import java.util.List;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
+import rx.Subscriber;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by ianwong on 2016/10/5.
@@ -23,6 +25,9 @@ import rx.Observable;
 public class WeatherInfo {
     private  YahooWeatherApi mYahooWeatherApi;
     private  static WeatherInfo gWeatherInfo;
+    private  static  WeatherResponse gWeatherResponse;
+    private  static   Observable<WeatherResponse> gCachedWeatherRequest;
+
     private WeatherInfo(){
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://query.yahooapis.com/")
@@ -41,14 +46,35 @@ public class WeatherInfo {
     }
 
     /**
-     * get shenzhen WeathInfo.
+     * get China/shenzhen Weather Info.
      * becauseof  a Observable object ,caller can observer it
      * @return a Observable object that wrap WeatherResponse
      * WeatherResponse is auto generated from json by http://www.jsonschema2pojo.org/
+     *
+     * WARING: not thread safe .
      * */
     public Observable<WeatherResponse> getWeatherInfo(){
         String weatherQueryString = "select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22%E6%B7%B1%E5%9C%B3%22)";
-        return mYahooWeatherApi.getWeatherInfo(weatherQueryString, "json");
+
+        if(gWeatherResponse == null ) {
+            if(gCachedWeatherRequest == null) {
+                gCachedWeatherRequest = mYahooWeatherApi.getWeatherInfo(weatherQueryString, "json")
+                        .subscribeOn(Schedulers.io())
+                        .map(new Func1<WeatherResponse, WeatherResponse>() {
+                            @Override
+                            public WeatherResponse call(WeatherResponse weatherResponse) {
+                                gWeatherResponse = weatherResponse;
+                                return weatherResponse;
+                            }
+                        });
+            }
+
+            return gCachedWeatherRequest;
+        }
+        else{
+            gCachedWeatherRequest = null;
+            return  Observable.just(gWeatherResponse);
+        }
     }
 
     /**
@@ -110,6 +136,10 @@ public class WeatherInfo {
 
     }
 
+    /**
+     * get weather state such as
+     * "Partly Cloudy", "showers", "thunderstorms" etc.
+     * */
     public static String getCloudState(WeatherResponse weatherResponse){
         return weatherResponse.getQuery().getResults()
                 .getChannel().getItem().getCondition().getText();

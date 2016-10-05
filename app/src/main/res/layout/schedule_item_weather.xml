@@ -37,7 +37,6 @@
             android:layout_marginRight="@dimen/schedule_item_text_offset"
             android:textSize="@dimen/sp_12"
             android:textColor="@color/scheduleTextColor"
-            android:text="11"
             android:gravity="center_vertical"
             android:clickable="false"/>
     </LinearLayout>

@@ -81,7 +81,6 @@ public class ScheduleViewAdapter extends RecyclerView.Adapter {
         }
 
         WeatherInfo.getInstance().getWeatherInfo()
-                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<WeatherResponse>() {
                     @Override
