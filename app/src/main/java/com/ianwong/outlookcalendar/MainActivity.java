@@ -143,6 +143,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+
+                //some times layout can trigger scroll event because of scroll Range
+                // change ,int this case, dx = 0 & dy == 0 , should return immediately
+                if(dx == 0 && dy == 0) {
+                    return;
+                }
+
                 //if scheduleView is scrolled by calendar ,not response this listener.
                 if (mScheduleMoveByCalendar) {
                     mScheduleMoveByCalendar = false;

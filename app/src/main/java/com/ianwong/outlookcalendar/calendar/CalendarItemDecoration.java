@@ -56,6 +56,8 @@ public class CalendarItemDecoration extends RecyclerView.ItemDecoration {
         mTextPaint.setTextSize(monthTipsFontSize);
         mMaskPaint = new Paint();
         mMaskPaint.setColor(calendarMaskColor);
+        mTextPaint.setAntiAlias(true);
+        mTextPaint.setSubpixelText(true);
     }
 
     public RecyclerView.OnScrollListener  getScrollListener(){
