@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
         mCalendarView.setItemAnimator(null);
         calendarManager.scrollToPosition(calendarSet.getTodayDateIndex());
 
+        //expand calendar when dragging
         mCalendarView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {

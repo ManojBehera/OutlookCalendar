@@ -20,4 +20,6 @@
     <color name="scheduleTextColorSelected">#0072C6</color>
     <color name="scheduleItemBgColorPressed">#f1f1f1</color>
     <color name="scheduleItemBgColorNormal">#ffffff</color>
+    <color name="scheduleItemTimeTextColor">#f92e37</color>
+    
 </resources>
