@@ -99,8 +99,8 @@ public class ScheduleViewAdapter extends RecyclerView.Adapter {
                     @Override
                     public void onNext(WeatherResponse weatherResponse) {
                         viewHolder.mTemperature[0].setText(WeatherInfo.getLowTemperature(weatherResponse));
-                        viewHolder.mTemperature[1].setText(WeatherInfo.getTemperature(weatherResponse));
-                        viewHolder.mTemperature[2].setText(WeatherInfo.getHighTemperature(weatherResponse));
+                        viewHolder.mTemperature[1].setText(WeatherInfo.getHighTemperature(weatherResponse));
+                        viewHolder.mTemperature[2].setText(WeatherInfo.getTemperature(weatherResponse));
                     }
                 });
     }
