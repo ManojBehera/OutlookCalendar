@@ -61,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
 
                             @Override
                             public void onNext(WeatherResponse weatherResponse) {
-                                String weatherInfo = "city:" + WeatherInfo.getCity(weatherResponse)
-                                        + " Temperature:" + WeatherInfo.getTemperature(weatherResponse)
+                                String weatherInfo = "City:" + WeatherInfo.getCity(weatherResponse)
+                                        + "\nTemperature:" + WeatherInfo.getTemperature(weatherResponse ,0 ,1)
                                         + "\nCloudState:" + WeatherInfo.getCloudState(weatherResponse);
 
                                 Toast toast = Toast.makeText(MainActivity.this, weatherInfo, Toast.LENGTH_LONG);

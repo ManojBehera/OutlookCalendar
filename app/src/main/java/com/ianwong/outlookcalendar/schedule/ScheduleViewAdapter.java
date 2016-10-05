@@ -74,15 +74,11 @@ public class ScheduleViewAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         final ScheduleItemViewHolder viewHolder = (ScheduleItemViewHolder)holder;
         if(viewHolder.mViewType != 1){
             return;
         }
-
-//        LocalDate date = mCalendarSet.getDateByIndex(position);
-//        if(CalendarSet.isToday(date)){
-//        }
 
         WeatherInfo.getInstance().getWeatherInfo()
                 .subscribeOn(Schedulers.io())
@@ -98,9 +94,32 @@ public class ScheduleViewAdapter extends RecyclerView.Adapter {
 
                     @Override
                     public void onNext(WeatherResponse weatherResponse) {
-                        viewHolder.mTemperature[0].setText(WeatherInfo.getLowTemperature(weatherResponse));
-                        viewHolder.mTemperature[1].setText(WeatherInfo.getHighTemperature(weatherResponse));
-                        viewHolder.mTemperature[2].setText(WeatherInfo.getTemperature(weatherResponse));
+                        LocalDate date = mCalendarSet.getDateByIndex(position);
+                        if(CalendarSet.isToday(date)){
+                            try {
+                                //today weather info
+                                viewHolder.mTemperature[0].setText(WeatherInfo.getTemperature(weatherResponse, 0, 0));
+                                viewHolder.mTemperature[1].setText(WeatherInfo.getTemperature(weatherResponse, 0, 2));
+                                viewHolder.mTemperature[2].setText(WeatherInfo.getTemperature(weatherResponse, 0, 1));
+                            }
+                            catch (IndexOutOfBoundsException e){
+                                e.printStackTrace();
+                            }
+
+                        }
+                        else{
+                            try {
+                                //tomorrow weather info
+                                viewHolder.mTemperature[0].setText(WeatherInfo.getTemperature(weatherResponse, 1, 0));
+                                viewHolder.mTemperature[1].setText(WeatherInfo.getTemperature(weatherResponse, 1, 2));
+                                viewHolder.mTemperature[2].setText(WeatherInfo.getTemperature(weatherResponse, 1, 1));
+
+                            }
+                            catch (IndexOutOfBoundsException e){
+                                e.printStackTrace();
+                            }
+
+                        }
                     }
                 });
     }

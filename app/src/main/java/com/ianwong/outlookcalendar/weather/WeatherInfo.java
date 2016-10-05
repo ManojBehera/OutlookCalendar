@@ -1,7 +1,10 @@
 package com.ianwong.outlookcalendar.weather;
 
 
+import com.ianwong.outlookcalendar.weather.yahooweather.Forecast;
 import com.ianwong.outlookcalendar.weather.yahooweather.WeatherResponse;
+
+import java.util.List;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -48,39 +51,62 @@ public class WeatherInfo {
         return mYahooWeatherApi.getWeatherInfo(weatherQueryString, "json");
     }
 
+    /**
+    * get city that the weatherResponse from.
+    * */
     public static String getCity(WeatherResponse weatherResponse){
         return weatherResponse.getQuery().getResults().getChannel().getLocation().getCity();
 
     }
 
+    /**
+     * convert degree fah to degree cel
+     * @param temp  degree fah (string)
+     * */
     public static  String convertFahToCel(String temp){
 
       double cel = Double.parseDouble(temp);
         return String.valueOf((int)((cel - 32)/1.8)) + "℃";
     }
 
-    public static String getTemperature(WeatherResponse weatherResponse){
-        return convertFahToCel(weatherResponse.getQuery().getResults()
-                .getChannel().getItem().getCondition().getTemp());
+    /**
+     * get temperature
+     * @param weatherResponse  weather info from yahoo
+     * @param whichDay which day that forecast by yahoo
+     * range from today
+     * @param type ==0 lowest temperature
+     *             ==1 average temperature
+     *             ==2 highest temperature
+     *             default return average temperature.
+     * */
+    public static String getTemperature(WeatherResponse weatherResponse, int whichDay, int type)
+            throws IndexOutOfBoundsException{
 
-    }
+        List<Forecast> forecasts = weatherResponse.getQuery().getResults()
+                .getChannel().getItem().getForecast();
 
-    public static String getLowTemperature(WeatherResponse weatherResponse){
-        return convertFahToCel(weatherResponse.getQuery().getResults()
-                .getChannel().getItem().getForecast().get(0).getLow());
+        if(whichDay < 0 || whichDay > forecasts.size() ){
+            throw new IndexOutOfBoundsException("exceed forecast ability");
+        }
 
-    }
+        String fah;
+        switch (type){
+            case 0: {
+                fah = forecasts.get(whichDay).getLow();
+            }
+                break;
+            case 2: {
+                fah = forecasts.get(whichDay).getHigh();
+            }
+                break;
+            default:{
+                fah = weatherResponse.getQuery().getResults()
+                        .getChannel().getItem().getCondition().getTemp();
+            }
+                break;
+        }
 
-    public static String getHighTemperature(WeatherResponse weatherResponse){
-        return convertFahToCel(weatherResponse.getQuery().getResults()
-                .getChannel().getItem().getForecast().get(0).getHigh());
-
-    }
-
-
-    public static String getCode(WeatherResponse weatherResponse){
-       return weatherResponse.getQuery().getResults()
-               .getChannel().getItem().getCondition().getCode();
+        return convertFahToCel(fah);
 
     }
 
