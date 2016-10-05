@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">OutlookCalendar</string>
+    <string name="action_settings">Settings</string>
+    <string name="no_schedule_content">没有事件</string>
+</resources>

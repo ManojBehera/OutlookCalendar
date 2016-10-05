@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/schedule_item_bg"
+    android:clickable="true">
+    <TextView
+        android:id="@+id/scheduleContent"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginLeft="@dimen/schedule_item_text_offset"
+        android:textSize="@dimen/sp_12"
+        android:textColor="@color/scheduleTextColor"
+        android:text="@string/no_schedule_content"
+        android:gravity="center_vertical"
+        android:clickable="false"
+        />
+</LinearLayout>

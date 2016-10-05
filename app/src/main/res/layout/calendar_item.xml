@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.ianwong.outlookcalendar.calendar.CalendarItemView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="45dp"
+    android:gravity="center"
+    android:background="@drawable/calendar_item_bg"
+    android:textColor="@color/calendar_item_text_color"
+    android:textSize="@dimen/sp_14"
+    android:layout_margin="1dp">
+
+</com.ianwong.outlookcalendar.calendar.CalendarItemView>

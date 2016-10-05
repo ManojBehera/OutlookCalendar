@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#0072C6</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#0072C6</color>
+
+    <color name="colorWhite">#ffffff</color>
+    <color name="calendarWeekOfDay">#0072C6</color>
+    <color name="calendarItemTextSelected">#ffffffff</color>
+    <color name="calendarItemTextNormal">#a8a8ac</color>
+    <color name="calendarItemTextToday">#0072C6</color>
+    <color name="calendarItemBgSelected">#0072C6</color>
+    <color name="calendarItemBgNormal">#ffffff</color>
+    <color name="calendarItemBgPressed">#f5fafc</color>
+    <color name="calendarMonthTips">#222222</color>
+    <color name="calendarMask">#7fffffff</color>
+
+    <color name="dividerColor">#E8E8E8</color>
+    <color name="scheduleTextColor">#a8a8ac</color>
+    <color name="scheduleTextColorSelected">#0072C6</color>
+    <color name="scheduleItemBgColorPressed">#f1f1f1</color>
+    <color name="scheduleItemBgColorNormal">#ffffff</color>
+</resources>
