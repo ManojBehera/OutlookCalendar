@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mCalendarView;
     private CalendarAdapter mCalendarAdapter;
     private boolean mScheduleMoveByCalendar = false;
+    private RecyclerView mScheduleView;
+    private LinearLayoutManager mScheduleLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,15 +61,20 @@ public class MainActivity extends AppCompatActivity {
 
                             @Override
                             public void onNext(WeatherResponse weatherResponse) {
-                                String weatherInfo = "city:" + weatherResponse.getQuery().getResults().getChannel().getLocation().getCity()
-                                        + " temp:" + weatherResponse.getQuery().getResults().getChannel().getItem().getCondition().getTemp()
-                                        + " code:" + weatherResponse.getQuery().getResults().getChannel().getItem().getCondition().getCode();
+                                String weatherInfo = "city:" + WeatherInfo.getCity(weatherResponse)
+                                        + " Temperature:" + WeatherInfo.getTemperature(weatherResponse)
+                                        + " CloudState:" + WeatherInfo.getCloudState(weatherResponse);
 
                                 Toast toast = Toast.makeText(MainActivity.this, weatherInfo, Toast.LENGTH_SHORT);
                                 toast.setGravity(Gravity.BOTTOM, 0, 40);
                                 toast.show();
                             }
                         });
+
+                //1)make today Schedule item visible at the second place in schedule list.
+                //2)make today Calendar item visible and be selected in Calendar list.
+                int position = mCalendarAdapter.getCalendarSet().getTodayDateIndex();
+                mScheduleLayoutManager.scrollToPositionWithOffset(position - 1, 0);
             }
         });
 
@@ -113,26 +120,26 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //initialize schedule View
-        RecyclerView scheduleView = (RecyclerView) findViewById(R.id.schedule);
-        final LinearLayoutManager scheduleLayoutManager = new LinearLayoutManager(this);
-        scheduleView.setLayoutManager(scheduleLayoutManager);
+        mScheduleView = (RecyclerView) findViewById(R.id.schedule);
+        mScheduleLayoutManager = new LinearLayoutManager(this);
+        mScheduleView.setLayoutManager(mScheduleLayoutManager);
         ScheduleViewAdapter scheduleViewAdapter = new ScheduleViewAdapter(calendarSet);
-        scheduleView.setAdapter(scheduleViewAdapter);
-        scheduleView.addItemDecoration(new ScheduleItemDecoration(this));
-        scheduleLayoutManager.scrollToPosition(calendarSet.getTodayDateIndex() - 1);
+        mScheduleView.setAdapter(scheduleViewAdapter);
+        mScheduleView.addItemDecoration(new ScheduleItemDecoration(this));
+        mScheduleLayoutManager.scrollToPosition(calendarSet.getTodayDateIndex() - 1);
 
         //set item click listener and scroll the schedule list
         mCalendarAdapter.setOnItemClickListener(new CalendarAdapter.OnItemClickListener() {
             @Override
             public void onItemClickListener(View v, int position) {
                 //make the position item visible at the second place in schedule list.
-                scheduleLayoutManager.scrollToPositionWithOffset(position - 1, 0);
+                mScheduleLayoutManager.scrollToPositionWithOffset(position - 1, 0);
                 mScheduleMoveByCalendar = true;
                 return;
             }
         });
 
-        scheduleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        mScheduleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -151,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //adjust calendarView's selected date on schedule view 's first visible item
                 //position changed.
-                int firstVisiblePosition = scheduleLayoutManager.findFirstVisibleItemPosition();
+                int firstVisiblePosition = mScheduleLayoutManager.findFirstVisibleItemPosition();
                 //1)make the position visile
                 mCalendarView.scrollToPosition(firstVisiblePosition);
                 //2) set selected state if needed.

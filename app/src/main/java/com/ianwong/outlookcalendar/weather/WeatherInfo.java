@@ -73,10 +73,15 @@ public class WeatherInfo {
 
 
     public static String getCode(WeatherResponse weatherResponse){
-       return weatherResponse.getQuery().getResults().getChannel().getItem().getCondition().getCode();
+       return weatherResponse.getQuery().getResults()
+               .getChannel().getItem().getCondition().getCode();
 
     }
 
+    public static String getCloudState(WeatherResponse weatherResponse){
+        return weatherResponse.getQuery().getResults()
+                .getChannel().getItem().getCondition().getText();
 
+    }
 
 }

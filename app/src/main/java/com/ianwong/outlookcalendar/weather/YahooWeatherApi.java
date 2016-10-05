@@ -1,7 +1,6 @@
 package com.ianwong.outlookcalendar.weather;
 import com.ianwong.outlookcalendar.weather.yahooweather.WeatherResponse;
 
-import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import rx.Observable;
