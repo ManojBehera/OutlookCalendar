@@ -32,7 +32,10 @@ import rx.schedulers.Schedulers;
 public class MainActivity extends AppCompatActivity {
     private RecyclerView mCalendarView;
     private CalendarAdapter mCalendarAdapter;
+    //indicate schedule view moved by calendar
     private boolean mScheduleMoveByCalendar = false;
+    //indicate need reset calendar and schedule view 's positions
+    private boolean mStartResetAllPositions = false;
     private RecyclerView mScheduleView;
     private LinearLayoutManager mScheduleLayoutManager;
 
@@ -75,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 //2)make today Calendar item visible and be selected in Calendar list.
                 int position = mCalendarAdapter.getCalendarSet().getTodayDateIndex();
                 mScheduleLayoutManager.scrollToPositionWithOffset(position - 1, 0);
+                mStartResetAllPositions = true;
             }
         });
 
@@ -144,10 +148,16 @@ public class MainActivity extends AppCompatActivity {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                //some times layout can trigger scroll event because of scroll Range
-                // change ,int this case, dx = 0 & dy == 0 , should return immediately
-                if(dx == 0 && dy == 0) {
-                    return;
+                if(mStartResetAllPositions) {
+                    //reset calendar and schedule view 's positions
+                    mStartResetAllPositions = false;
+                }
+                else{
+                    //some times layout can trigger scroll event because of scroll Range
+                    // change ,int this case, dx = 0 & dy == 0 , should return immediately
+                    if(dx == 0 && dy == 0 ) {
+                        return;
+                    }
                 }
 
                 //if scheduleView is scrolled by calendar ,not response this listener.
