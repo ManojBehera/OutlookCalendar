@@ -20,6 +20,7 @@ import java.util.Locale;
 
 /**
  * Created by ianwong on 2016/10/4.
+ * draw date info for schedule list
  */
 
 public class ScheduleItemDecoration extends RecyclerView.ItemDecoration {
@@ -50,7 +51,7 @@ public class ScheduleItemDecoration extends RecyclerView.ItemDecoration {
         super.onDraw(c, parent, state);
         int childCount = parent.getChildCount();
         for (int i = 0; i < childCount; i++){
-            //draw Top background
+            //1)draw Top background
             final View child = parent.getChildAt(i);
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child
                     .getLayoutParams();
@@ -71,7 +72,7 @@ public class ScheduleItemDecoration extends RecyclerView.ItemDecoration {
             mDateBkg.setBounds(left, top, right, bottom);
             mDateBkg.draw(c);
 
-            //draw date info
+            //2)draw date info
             ViewHolder vh = (ViewHolder)child.getTag();
             final int position = vh.getAdapterPosition();
             final CalendarSet calendarSet = ((ScheduleViewAdapter)parent.getAdapter()).getCalendarSet();

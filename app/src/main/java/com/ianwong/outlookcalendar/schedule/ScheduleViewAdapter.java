@@ -24,6 +24,7 @@ import rx.schedulers.Schedulers;
 
 /**
  * Created by ianwong on 2016/10/4.
+ * schedule View adapter
  */
 
 public class ScheduleViewAdapter extends RecyclerView.Adapter {
@@ -81,6 +82,7 @@ public class ScheduleViewAdapter extends RecyclerView.Adapter {
             return;
         }
 
+        //set weather info for today and tomorrow.
         WeatherInfo.getInstance().getWeatherInfo()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<WeatherResponse>() {

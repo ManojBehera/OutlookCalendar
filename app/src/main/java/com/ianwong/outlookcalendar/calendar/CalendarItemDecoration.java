@@ -104,9 +104,9 @@ public class CalendarItemDecoration extends RecyclerView.ItemDecoration {
      * */
     protected void drawPressState(Canvas c, RecyclerView parent){
 
-        //draw foreground Mask
+        //1)draw foreground Mask
         c.drawRect(0,0,parent.getWidth(),parent.getHeight(),mMaskPaint);
-        //draw month tips
+        //2)draw month tips
         int curMonth = 0;
         boolean hasDrawTips = false;
         int childCount = parent.getChildCount();
