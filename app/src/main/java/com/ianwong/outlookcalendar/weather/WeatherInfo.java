@@ -2,6 +2,7 @@ package com.ianwong.outlookcalendar.weather;
 
 
 import com.ianwong.outlookcalendar.weather.yahooweather.Forecast;
+import com.ianwong.outlookcalendar.weather.yahooweather.Item;
 import com.ianwong.outlookcalendar.weather.yahooweather.WeatherResponse;
 import java.util.List;
 
@@ -143,6 +144,39 @@ public class WeatherInfo {
         return weatherResponse.getQuery().getResults()
                 .getChannel().getItem().getCondition().getText();
 
+    }
+
+    /**
+     * get weather state 's image
+     * its a gif format in yahoo weather, format as follows:
+     *
+     *  "description": "<![CDATA[<img src=\"http://l.yimg.com/a/i/us/we/52/29.gif\"/>\n<BR />\n<b>
+     *      Current Conditions:
+     *  </b>\n<BR />Partly Cloudy\n<BR />\n<BR />\n<b>Forecast:</b>\n<BR /> Wed -
+     *  Thunderstorms. High: 84Low: 75\n<BR />
+     *  Thu - Scattered Thunderstorms. High: 86Low: 74\n<BR />
+     *  Fri - Scattered Thunderstorms. High: 81Low: 75\n<BR />
+     *  Sat - Scattered Thunderstorms. High: 81Low: 75\n<BR />
+     *  Sun - Scattered Showers. High: 77Low: 71\n<BR />\n<BR />\n
+     *  <a href=\"http://us.rd.yahoo.com/dailynews/rss/weather/Country__Country
+     *  /*https://weather.yahoo.com/country/state/city-2161853/\">
+     *  Full Forecast at Yahoo! Weather</a>\n<BR />\n<BR />\n
+     *  (provided by <a href=\"http://www.weather.com\" >The Weather Channel</a>)\n<BR />\n]]>"
+     *
+     * */
+    public static String getWeatherStateImage(WeatherResponse weatherResponse){
+
+        Item item = weatherResponse.getQuery().getResults()
+                .getChannel().getItem();
+        String desc = item.getDescription();
+
+        int start = desc.indexOf("<img src=\"") + "<img src=\"".length();
+        int end = desc.indexOf("\"/>");
+        if(start == -1 || end == -1){
+            return "";
+        }
+        desc= desc.substring(start, end);
+        return desc;
     }
 
 }

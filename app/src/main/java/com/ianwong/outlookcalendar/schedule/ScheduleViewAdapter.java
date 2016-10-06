@@ -14,6 +14,7 @@ import com.ianwong.outlookcalendar.calendar.CalendarSet;
 import com.ianwong.outlookcalendar.R;
 import com.ianwong.outlookcalendar.weather.WeatherInfo;
 import com.ianwong.outlookcalendar.weather.yahooweather.WeatherResponse;
+import com.koushikdutta.ion.Ion;
 
 import org.threeten.bp.LocalDate;
 
@@ -97,6 +98,10 @@ public class ScheduleViewAdapter extends RecyclerView.Adapter {
                         if(CalendarSet.isToday(date)){
                             try {
                                 //today weather info
+                                String imgUrl = WeatherInfo.getWeatherStateImage(weatherResponse);
+                                for(int i = 0 ; i < 3 ; i++) {
+                                    Ion.with(viewHolder.mWeatherState[i]).load(imgUrl);
+                                }
                                 viewHolder.mTemperature[0].setText(WeatherInfo.getTemperature(weatherResponse, 0, 0));
                                 viewHolder.mTemperature[1].setText(WeatherInfo.getTemperature(weatherResponse, 0, 2));
                                 viewHolder.mTemperature[2].setText(WeatherInfo.getTemperature(weatherResponse, 0, 1));
@@ -109,6 +114,10 @@ public class ScheduleViewAdapter extends RecyclerView.Adapter {
                         else{
                             try {
                                 //tomorrow weather info
+                                String imgUrl = WeatherInfo.getWeatherStateImage(weatherResponse);
+                                for(int i = 0 ; i < 3 ; i++) {
+                                    Ion.with(viewHolder.mWeatherState[i]).load(imgUrl);
+                                }
                                 viewHolder.mTemperature[0].setText(WeatherInfo.getTemperature(weatherResponse, 1, 0));
                                 viewHolder.mTemperature[1].setText(WeatherInfo.getTemperature(weatherResponse, 1, 2));
                                 viewHolder.mTemperature[2].setText(WeatherInfo.getTemperature(weatherResponse, 1, 1));
